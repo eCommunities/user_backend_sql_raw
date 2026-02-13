@@ -27,6 +27,7 @@ and IBM databases. By using an appropriate DSN you should be able to connect to
 these databases. This has not been tested, though.]]></description>
     <version>2.0.1</version>
     <licence>agpl</licence>
+    <author mail="support@ecms.io" >Kevin Farley</author>
     <author mail="dev@abelonline.de" >Alexey Abel</author>
     <namespace>UserBackendSqlRaw</namespace>
     <types>
@@ -34,13 +35,13 @@ these databases. This has not been tested, though.]]></description>
         <authentication/>
     </types>
     <documentation>
-        <admin>https://github.com/PanCakeConnaisseur/user_backend_sql_raw/blob/master/README.md</admin>
+        <admin>https://github.com/eCommunities/user_backend_sql_raw/blob/master/README.md</admin>
     </documentation>
     <category>security</category>
 	<discussion>https://help.nextcloud.com/c/apps/user-backend-sql-raw/138</discussion>
-    <bugs>https://github.com/PanCakeConnaisseur/user_backend_sql_raw/issues</bugs>
-    <repository type="git">https://github.com/PanCakeConnaisseur/user_backend_sql_raw</repository>
-    <screenshot small-thumbnail="https://raw.githubusercontent.com/PanCakeConnaisseur/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-small.jpg">https://raw.githubusercontent.com/PanCakeConnaisseur/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-large.jpg</screenshot>
+    <bugs>https://github.com/eCommunities/user_backend_sql_raw/issues</bugs>
+    <repository type="git">https://github.com/eCommunities/user_backend_sql_raw</repository>
+    <screenshot small-thumbnail="https://raw.githubusercontent.com/eCommunities/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-small.jpg">https://raw.githubusercontent.com/eCommunities/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-large.jpg</screenshot>
     <dependencies>
         <php min-version="8.1" max-version="8.4"/>
         <nextcloud min-version="31" max-version="31"/>

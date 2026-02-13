@@ -1,17 +1,21 @@
 {
-	"name": "pancakeconnaisseur/user-backend-sql-raw",
+	"name": "eCommunities/user_backend_sql_raw",
 	"description": "User management and authentication for Nextcloud through arbitrary SQL queries",
 	"type": "project",
 	"license": "AGPL-3.0-or-later",
 	"authors": [
 		{
+			"name": "Kevin Farley",
+			"email": "support@ecms.io"
+		},
+		{
 			"name": "Alexey Abel",
 			"email": "dev@abelonline.de"
 		}
 	],
-	"homepage": "https://github.com/PanCakeConnaisseur/user_backend_sql_raw",
+	"homepage": "https://github.com/eCommunities/user_backend_sql_raw",
 	"support": {
-		"issues": "https://github.com/PanCakeConnaisseur/user_backend_sql_raw/issues"
+		"issues": "https://github.com/eCommunities/user_backend_sql_raw/issues"
 	},
 	"autoload": {
 		"psr-4": {

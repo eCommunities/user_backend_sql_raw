@@ -92,7 +92,7 @@ Examples are NixOS or Docker (secrets).
   store](https://apps.nextcloud.com/apps/user_backend_sql_raw) and support older
   versions of Nextcloud. Alternatively you can find all versions in the
   [releases
-  section](https://github.com/PanCakeConnaisseur/user_backend_sql_raw/releases).
+  section](https://github.com/eCommunities/user_backend_sql_raw/releases).
 
 ### Fixed
 
@@ -119,7 +119,7 @@ Examples are NixOS or Docker (secrets).
 ### Added
 
 * Compatibility with Nextcloud 18
-  [728f0fc](https://github.com/PanCakeConnaisseur/user_backend_sql_raw/commit/728f0fc13f4d2ecdc48dde2685d5962f1713fef5)
+  [728f0fc](https://github.com/eCommunities/user_backend_sql_raw/commit/728f0fc13f4d2ecdc48dde2685d5962f1713fef5)
 
 ## [1.0.9] - 2019-12-18
 
