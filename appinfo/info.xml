@@ -25,7 +25,7 @@ This app primarily supports PostgreSQL and MariaDB/MySQL but the underlying PHP
 mechanism also supports Firebird, MS SQL, Oracle DB, ODBC, DB2, SQLite, Informix
 and IBM databases. By using an appropriate DSN you should be able to connect to
 these databases. This has not been tested, though.]]></description>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
     <licence>agpl</licence>
     <author mail="support@ecms.io" >Kevin Farley</author>
     <author mail="dev@abelonline.de" >Alexey Abel</author>
