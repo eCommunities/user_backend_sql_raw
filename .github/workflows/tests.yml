@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: nextcloud/server
+          ref: stable31
           path: ./nextcloud
 
       - name: Checkout 3rd party submodule for Nextcloud
