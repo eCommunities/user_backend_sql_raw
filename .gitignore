@@ -1,1 +1,19 @@
 /releases
+
+# Composer dependencies and lockfile for local testing
+/vendor/
+/composer.lock
+
+# Local test checkouts / artifacts
+/nextcloud/
+/.phpunit.result.cache
+
+# IDE / editor metadata
+/.project
+/.settings/
+/.idea/
+/.vscode/
+
+# OS artifacts
+/.DS_Store
+Thumbs.db
