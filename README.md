@@ -31,6 +31,20 @@ See [CHANGELOG.md](CHANGELOG.md) for changes in newer versions. This app follows
 semantic versioning and there should not be any breaking changes unless the
 major version has changed.
 
+## Maintainer
+
+This repository is currently maintained by eCommunities:
+https://github.com/eCommunities/user_backend_sql_raw
+
+Original project author attribution is retained in this fork.
+
+## Compatibility
+
+Current target compatibility:
+
+* Nextcloud 31
+* PHP 8.1 - 8.4
+
 ## Installation
 
 You can find *User Backend SQL Raw* in the *Security* category of the Nextcloud
@@ -82,7 +96,7 @@ that *User Backend SQL Raw* will connect to.
 
 There are two methods to configure the database connection:
 
-1. Set `dsn` to a DSN that contains the entire db connnection configuration including the db user and db password
+1. Set `dsn` to a DSN that contains the entire db connection configuration including the db user and db password
 2. Set `dsn` to a DSN that contains everything **but** the db user and db password and then set `db_user` and `db_password`/`db_password_file`
 
 PostgreSQL works with method 1 and 2. MySQL works only with method 2. If you use `db_password_file` also set `db_user` (even for PostgreSQL) and don't put the username in the DSN. This is because, the underlying PDO classes have some quirks and diverge from the documented behaviour. So, better don't mix both methods. `db_password_file` has higher priority than `db_password`, but lower priority than password in DSN. But it's better to only set one source for the password, for the same reasons.
