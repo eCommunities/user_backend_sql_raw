@@ -1,5 +1,5 @@
 {
-	"name": "eCommunities/user_backend_sql_raw",
+	"name": "ecommunities/user_backend_sql_raw",
 	"description": "User management and authentication for Nextcloud through arbitrary SQL queries",
 	"type": "project",
 	"license": "AGPL-3.0-or-later",
