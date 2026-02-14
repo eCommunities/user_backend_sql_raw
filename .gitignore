@@ -2,7 +2,6 @@
 
 # Composer dependencies and lockfile for local testing
 /vendor/
-/composer.lock
 
 # Local test checkouts / artifacts
 /nextcloud/
