@@ -44,6 +44,6 @@ these databases. This has not been tested, though.]]></description>
     <screenshot small-thumbnail="https://raw.githubusercontent.com/eCommunities/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-small.jpg">https://raw.githubusercontent.com/eCommunities/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-large.jpg</screenshot>
     <dependencies>
         <php min-version="8.1" max-version="8.4"/>
-        <nextcloud min-version="31" max-version="31"/>
+        <nextcloud min-version="31" max-version="32"/>
     </dependencies>
 </info>
