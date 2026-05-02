@@ -255,6 +255,22 @@ final class ConfigTest extends TestCase
         self::assertEquals($expectedQuery, $actualReturnValue);
     }
 
+    public function testGroupQueryIsReturnedWhenItIsSet()
+    {
+        $this->nextcloudConfigStub->method('getSystemValue')
+            ->willReturn(array(
+                'queries' => array(
+                    'get_group_users' => 'SELECT username FROM users WHERE group_id = :group_id',
+                ),
+            ));
+
+        $config = new Config($this->logStub, $this->nextcloudConfigStub);
+
+        $expectedQuery = 'SELECT username FROM users WHERE group_id = :group_id';
+        $actualReturnValue = $config->getQueryGetGroupUsers();
+        self::assertEquals($expectedQuery, $actualReturnValue);
+    }
+
     // Tests that check whether invalid values for countable types are
     // recognized
 

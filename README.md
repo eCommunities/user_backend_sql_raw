@@ -74,6 +74,17 @@ This app has no user interface. All configuration is done via Nextcloud's system
        //'count_users' => 'SELECT COUNT (*) FROM users',
        //'get_home' => '',
        //'create_user' => 'INSERT INTO users (local, domain, password_hash) VALUES (split_part(:username, \'@\', 1), split_part(:username, \'@\', 2), :password_hash)',
+       //'group_exists' => 'SELECT EXISTS(SELECT 1 FROM groups WHERE gid = :group_id)',
+       //'get_groups' => 'SELECT gid FROM groups WHERE (gid ILIKE :search) OR (display_name ILIKE :search)',
+       //'get_user_groups' => 'SELECT group_id FROM group_members WHERE user_id = :user_id',
+       //'get_group_users' => 'SELECT user_id FROM group_members WHERE group_id = :group_id AND user_id ILIKE :search',
+       //'add_user_to_group' => 'INSERT INTO group_members (group_id, user_id) VALUES (:group_id, :user_id)',
+       //'remove_user_from_group' => 'DELETE FROM group_members WHERE group_id = :group_id AND user_id = :user_id',
+       //'create_group' => 'INSERT INTO groups (gid, display_name) VALUES (:group_id, :display_name)',
+       //'delete_group' => 'DELETE FROM groups WHERE gid = :group_id',
+       //'count_group_users' => 'SELECT COUNT(*) FROM group_members WHERE group_id = :group_id',
+       //'get_group_display_name' => 'SELECT display_name FROM groups WHERE gid = :group_id',
+       //'set_group_display_name' => 'UPDATE groups SET display_name = :new_display_name WHERE gid = :group_id',
   ),
  //'hash_algorithm_for_new_passwords' => 'bcrypt',
  ),
@@ -163,6 +174,12 @@ that will be used to read/write data.
           your query by this app
         * specify the `LIKE` without `%`, they will be added by the app. This is due to how prepared
           statements work. Again, see the example.
+* Group support is optional and query-driven, like users:
+  * Listing/search: `get_groups` uses `:search` and should not contain a hardcoded `LIMIT`/`OFFSET`.
+  * Membership: `get_user_groups` uses `:user_id`, `get_group_users` uses `:group_id` and `:search`.
+  * Group writes: `add_user_to_group`, `remove_user_from_group`, `create_group`, `delete_group`.
+  * Group metadata/counting: `group_exists`, `count_group_users`, `get_group_display_name`, `set_group_display_name`.
+  * Named parameters are fixed and must match exactly (`:group_id`, `:user_id`, `:display_name`, `:new_display_name`, `:search`).
 * Technical Info: Queries are passed verbatim to the
     [prepare()](http://php.net/manual/en/pdo.prepare.php) method of a PDO object.
 
