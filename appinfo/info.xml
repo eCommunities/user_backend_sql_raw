@@ -25,7 +25,7 @@ This app primarily supports PostgreSQL and MariaDB/MySQL but the underlying PHP
 mechanism also supports Firebird, MS SQL, Oracle DB, ODBC, DB2, SQLite, Informix
 and IBM databases. By using an appropriate DSN you should be able to connect to
 these databases. This has not been tested, though.]]></description>
-    <version>3.0.0</version>
+    <version>3.2.0</version>
     <licence>agpl</licence>
     <author mail="support@ecms.io" >Kevin Farley</author>
     <author mail="dev@abelonline.de" >Alexey Abel</author>
@@ -43,7 +43,7 @@ these databases. This has not been tested, though.]]></description>
     <repository type="git">https://github.com/eCommunities/user_backend_sql_raw</repository>
     <screenshot small-thumbnail="https://raw.githubusercontent.com/eCommunities/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-small.jpg">https://raw.githubusercontent.com/eCommunities/user_backend_sql_raw/2eb5221f0725a9ab09fde6384dea62463c7c52e5/screenshot-dark-large.jpg</screenshot>
     <dependencies>
-        <php min-version="8.1" max-version="8.4"/>
-        <nextcloud min-version="31" max-version="31"/>
+        <php min-version="8.1" max-version="8.5"/>
+        <nextcloud min-version="31" max-version="33"/>
     </dependencies>
 </info>

@@ -42,8 +42,8 @@ Original project author attribution is retained in this fork.
 
 Current target compatibility:
 
-* Nextcloud 31
-* PHP 8.1 - 8.4
+* Nextcloud 31 - 33
+* PHP 8.1 - 8.5
 
 ## Installation
 

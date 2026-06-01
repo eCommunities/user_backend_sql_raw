@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-05-02
+
+### Added
+
+* compatibility with Nextcloud 33
+
+## [3.1.0] - 2026-05-02
+
+### Added
+
+* compatibility with Nextcloud 32
+
 ## [3.0.0-beta.1] - 2026-02-13
 
 ### Added
