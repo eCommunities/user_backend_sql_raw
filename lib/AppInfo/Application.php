@@ -46,5 +46,9 @@ class Application extends App implements IBootstrap
         $userBackendSqlRaw = $context->getAppContainer()->get(\OCA\UserBackendSqlRaw\UserBackend::class);
         $userManager = $context->getAppContainer()->get('OCP\IUserManager');
         $userManager->registerBackend($userBackendSqlRaw);
+
+        $groupBackendSqlRaw = $context->getAppContainer()->get(\OCA\UserBackendSqlRaw\GroupBackend::class);
+        $groupManager = $context->getAppContainer()->get('OCP\IGroupManager');
+        $groupManager->addBackend($groupBackendSqlRaw);
     }
 }

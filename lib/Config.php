@@ -47,6 +47,17 @@ class Config
     const CONFIG_KEY_COUNT_USERS = 'count_users';
     const CONFIG_KEY_GET_HOME = 'get_home';
     const CONFIG_KEY_CREATE_USER = 'create_user';
+    const CONFIG_KEY_GROUP_EXISTS = 'group_exists';
+    const CONFIG_KEY_GET_GROUPS = 'get_groups';
+    const CONFIG_KEY_GET_USER_GROUPS = 'get_user_groups';
+    const CONFIG_KEY_GET_GROUP_USERS = 'get_group_users';
+    const CONFIG_KEY_ADD_USER_TO_GROUP = 'add_user_to_group';
+    const CONFIG_KEY_REMOVE_USER_FROM_GROUP = 'remove_user_from_group';
+    const CONFIG_KEY_CREATE_GROUP = 'create_group';
+    const CONFIG_KEY_DELETE_GROUP = 'delete_group';
+    const CONFIG_KEY_COUNT_GROUP_USERS = 'count_group_users';
+    const CONFIG_KEY_GET_GROUP_DISPLAY_NAME = 'get_group_display_name';
+    const CONFIG_KEY_SET_GROUP_DISPLAY_NAME = 'set_group_display_name';
 
     /* @var LoggerInterface */
     private $logger;
@@ -233,6 +244,61 @@ class Config
     public function getQueryCreateUser()
     {
         return $this->getQueryStringOrFalse(self::CONFIG_KEY_CREATE_USER);
+    }
+
+    public function getQueryGroupExists()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_GROUP_EXISTS);
+    }
+
+    public function getQueryGetGroups()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_GET_GROUPS);
+    }
+
+    public function getQueryGetUserGroups()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_GET_USER_GROUPS);
+    }
+
+    public function getQueryGetGroupUsers()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_GET_GROUP_USERS);
+    }
+
+    public function getQueryAddUserToGroup()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_ADD_USER_TO_GROUP);
+    }
+
+    public function getQueryRemoveUserFromGroup()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_REMOVE_USER_FROM_GROUP);
+    }
+
+    public function getQueryCreateGroup()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_CREATE_GROUP);
+    }
+
+    public function getQueryDeleteGroup()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_DELETE_GROUP);
+    }
+
+    public function getQueryCountGroupUsers()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_COUNT_GROUP_USERS);
+    }
+
+    public function getQueryGetGroupDisplayName()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_GET_GROUP_DISPLAY_NAME);
+    }
+
+    public function getQuerySetGroupDisplayName()
+    {
+        return $this->getQueryStringOrFalse(self::CONFIG_KEY_SET_GROUP_DISPLAY_NAME);
     }
 
 
