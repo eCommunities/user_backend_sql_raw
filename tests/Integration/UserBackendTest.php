@@ -68,19 +68,31 @@ class UserBackendTest extends TestCase {
 	}
 
 	public function testAppCanBeEnabled() {
-		if ($this->appManager->isInstalled(self::APP_ID)) {
-			$this->appManager->disableApp(self::APP_ID);
+		$this->ensureAppIsInstalledForEnableTests();
+		$wasEnabled = $this->appIsEnabled();
+
+		try {
+			if ($wasEnabled) {
+				$this->appManager->disableApp(self::APP_ID);
+			}
+
+			$this->appManager->enableApp(self::APP_ID);
+			$this->assertTrue($this->appIsEnabled());
+		} finally {
+			if (!$wasEnabled && $this->appIsEnabled()) {
+				$this->appManager->disableApp(self::APP_ID);
+			}
 		}
-		$this->appManager->enableApp(self::APP_ID);
-		$this->assertTrue($this->appManager->isInstalled(self::APP_ID));
 	}
 
 	public function testAppCanBeDisabled() {
-		if (!$this->appManager->isInstalled(self::APP_ID)) {
+		$this->ensureAppIsInstalledForEnableTests();
+
+		if (!$this->appIsEnabled()) {
 			$this->appManager->enableApp(self::APP_ID);
 		}
 		$this->appManager->disableApp(self::APP_ID);
-		$this->assertFalse($this->appManager->isInstalled(self::APP_ID));
+		$this->assertFalse($this->appIsEnabled());
 	}
 
 	public function testUserBackendCanBeRegistered() {
@@ -463,6 +475,24 @@ class UserBackendTest extends TestCase {
 	}
 
 	//TODO: Test implementsActions()
+
+	private function ensureAppIsInstalledForEnableTests(): void {
+		if ($this->nextcloudConfig->getAppValue(self::APP_ID, 'installed_version', '') === '') {
+			$this->nextcloudConfig->setAppValue(
+				self::APP_ID,
+				'installed_version',
+				$this->appManager->getAppVersion(self::APP_ID, false)
+			);
+		}
+	}
+
+	private function appIsEnabled(): bool {
+		if (method_exists($this->appManager, 'isEnabledForAnyone')) {
+			return $this->appManager->isEnabledForAnyone(self::APP_ID);
+		}
+
+		return $this->appManager->isInstalled(self::APP_ID);
+	}
 
 	private function getLogStub() {
 		return $this->getMockBuilder(LoggerInterface::class)->getMock();
