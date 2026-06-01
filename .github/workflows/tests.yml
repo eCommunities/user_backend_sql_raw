@@ -13,7 +13,7 @@ jobs:
         run: sudo apt update && sudo apt install composer php-sqlite3
 
       - name: Checkout latest Nextcloud
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: nextcloud/server
           ref: ${{ matrix.nextcloud }}
@@ -28,7 +28,7 @@ jobs:
         run: php occ maintenance:install --database "sqlite" --database-name "nextcloud"  --admin-user "admin" --admin-pass "adminpassword"
 
       - name: Checkout user_backend_sql_raw (test subject)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: ./nextcloud/apps/user_backend_sql_raw
 
