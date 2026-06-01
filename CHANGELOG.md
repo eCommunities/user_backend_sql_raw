@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-06-01
+
+### Added
+
+* SQL-backed Nextcloud group support, including group lookup, listing, membership, create/delete, user counting, and display names.
+
 ## [3.2.0] - 2026-05-02
 
 ### Added

@@ -82,7 +82,7 @@ This app has no user interface. All configuration is done via Nextcloud's system
        //'remove_user_from_group' => 'DELETE FROM group_members WHERE group_id = :group_id AND user_id = :user_id',
        //'create_group' => 'INSERT INTO groups (gid, display_name) VALUES (:group_id, :display_name)',
        //'delete_group' => 'DELETE FROM groups WHERE gid = :group_id',
-       //'count_group_users' => 'SELECT COUNT(*) FROM group_members WHERE group_id = :group_id',
+       //'count_group_users' => 'SELECT COUNT(*) FROM group_members WHERE group_id = :group_id AND user_id ILIKE :search',
        //'get_group_display_name' => 'SELECT display_name FROM groups WHERE gid = :group_id',
        //'set_group_display_name' => 'UPDATE groups SET display_name = :new_display_name WHERE gid = :group_id',
   ),
@@ -178,7 +178,9 @@ that will be used to read/write data.
   * Listing/search: `get_groups` uses `:search` and should not contain a hardcoded `LIMIT`/`OFFSET`.
   * Membership: `get_user_groups` uses `:user_id`, `get_group_users` uses `:group_id` and `:search`.
   * Group writes: `add_user_to_group`, `remove_user_from_group`, `create_group`, `delete_group`.
+  * `create_group` receives the requested group name as both `:group_id` and `:display_name`, and returns that group ID to Nextcloud on success.
   * Group metadata/counting: `group_exists`, `count_group_users`, `get_group_display_name`, `set_group_display_name`.
+  * `count_group_users` uses `:group_id` and `:search`; omit neither parameter.
   * Named parameters are fixed and must match exactly (`:group_id`, `:user_id`, `:display_name`, `:new_display_name`, `:search`).
 * Technical Info: Queries are passed verbatim to the
     [prepare()](http://php.net/manual/en/pdo.prepare.php) method of a PDO object.

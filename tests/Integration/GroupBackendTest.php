@@ -25,6 +25,8 @@ use OCA\UserBackendSqlRaw\Config;
 use OCA\UserBackendSqlRaw\GroupBackend;
 use OCA\UserBackendSqlRaw\Tests\Dbs\SqliteMemoryTestDb;
 use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUser;
 use PHPUnit\Framework\Attributes\Group;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -106,6 +108,14 @@ class GroupBackendTest extends TestCase
         self::assertSame(['bob'], $this->groupBackend->usersInGroup('admins', '', 1, 1));
     }
 
+    public function testSearchInGroupReturnsUsersIndexedByUid(): void
+    {
+        $users = $this->groupBackend->searchInGroup('admins', 'ali');
+
+        self::assertArrayHasKey('alice', $users);
+        self::assertSame('alice', $users['alice']->getUID());
+    }
+
     public function testAddAndRemoveUserFromGroupWorks(): void
     {
         self::assertFalse($this->groupBackend->inGroup('chris', 'admins'));
@@ -118,7 +128,7 @@ class GroupBackendTest extends TestCase
     public function testCreateAndDeleteGroupWorks(): void
     {
         self::assertFalse($this->groupBackend->groupExists('support'));
-        self::assertTrue($this->groupBackend->createGroup('support'));
+        self::assertSame('support', $this->groupBackend->createGroup('support'));
         self::assertTrue($this->groupBackend->groupExists('support'));
         self::assertTrue($this->groupBackend->deleteGroup('support'));
         self::assertFalse($this->groupBackend->groupExists('support'));
@@ -133,8 +143,94 @@ class GroupBackendTest extends TestCase
     public function testGroupDisplayNameReadAndWriteWorks(): void
     {
         self::assertSame('Administrators', $this->groupBackend->getDisplayName('admins'));
+        self::assertSame(['displayName' => 'Administrators'], $this->groupBackend->getGroupDetails('admins'));
         self::assertTrue($this->groupBackend->setDisplayName('admins', 'Admin Team'));
         self::assertSame('Admin Team', $this->groupBackend->getDisplayName('admins'));
+        self::assertSame(['displayName' => 'Admin Team'], $this->groupBackend->getGroupDetails('admins'));
+    }
+
+    public function testGroupManagerCanResolveGroupWithDisplayName(): void
+    {
+        $groupManager = $this->getGroupManagerWithBackend();
+
+        $group = $groupManager->get('admins');
+
+        self::assertNotNull($group);
+        self::assertSame('admins', $group->getGID());
+        self::assertSame('Administrators', $group->getDisplayName());
+    }
+
+    public function testGroupManagerSearchWorks(): void
+    {
+        $groupManager = $this->getGroupManagerWithBackend();
+
+        $groups = $groupManager->search('editor');
+
+        self::assertCount(1, $groups);
+        self::assertSame('editors', $groups[0]->getGID());
+        self::assertSame('Editors', $groups[0]->getDisplayName());
+    }
+
+    public function testGroupManagerSearchWorksWithoutGroupDisplayNameQuery(): void
+    {
+        $this->groupBackend = new GroupBackend(
+            $this->getLogStub(),
+            $this->getMockAppConfigWithoutGroupDisplayName(),
+            $this->getMockDb(),
+        );
+        $groupManager = $this->getGroupManagerWithBackend();
+
+        $groups = $groupManager->search('editor');
+
+        self::assertCount(1, $groups);
+        self::assertSame('editors', $groups[0]->getGID());
+        self::assertSame('editors', $groups[0]->getDisplayName());
+    }
+
+    public function testGroupObjectCanSearchAndCountUsers(): void
+    {
+        $group = $this->getGroupManagerWithBackend()->get('admins');
+
+        self::assertNotNull($group);
+        self::assertSame(2, $group->count());
+        self::assertSame(1, $group->count('ali'));
+
+        $users = $group->searchUsers('', 1, 1);
+        self::assertArrayHasKey('bob', $users);
+        self::assertSame('bob', $users['bob']->getUID());
+    }
+
+    public function testGroupObjectCanAddAndRemoveUsers(): void
+    {
+        $group = $this->getGroupManagerWithBackend()->get('admins');
+        $user = $this->createMock(IUser::class);
+        $user->method('getUID')->willReturn('chris');
+
+        self::assertNotNull($group);
+        self::assertTrue($group->canAddUser());
+        self::assertTrue($group->canRemoveUser());
+        self::assertFalse($this->groupBackend->inGroup('chris', 'admins'));
+
+        $group->addUser($user);
+        self::assertTrue($this->groupBackend->inGroup('chris', 'admins'));
+
+        $group->removeUser($user);
+        self::assertFalse($this->groupBackend->inGroup('chris', 'admins'));
+    }
+
+    public function testGroupManagerCanCreateAndDeleteGroups(): void
+    {
+        $groupManager = $this->getGroupManagerWithBackend();
+
+        $group = $groupManager->createGroup('support');
+
+        self::assertNotNull($group);
+        self::assertSame('support', $group->getGID());
+        self::assertSame('support', $group->getDisplayName());
+        self::assertTrue($this->groupBackend->groupExists('support'));
+
+        self::assertTrue($group->delete());
+        self::assertFalse($this->groupBackend->groupExists('support'));
     }
 
     private function getLogStub()
@@ -142,10 +238,27 @@ class GroupBackendTest extends TestCase
         return $this->getMockBuilder(LoggerInterface::class)->getMock();
     }
 
+    private function getGroupManagerWithBackend(): IGroupManager
+    {
+        $groupManager = $this->container->get('OCP\IGroupManager');
+        $groupManager->addBackend($this->groupBackend);
+        return $groupManager;
+    }
+
     private function getMockAppConfig(): Config
     {
         $nextcloudConfigStub = $this->getMockBuilder(IConfig::class)->getMock();
         $nextcloudConfigStub->method('getSystemValue')->willReturn($this->getMockAppConfigurationArray());
+        return new Config($this->getLogStub(), $nextcloudConfigStub);
+    }
+
+    private function getMockAppConfigWithoutGroupDisplayName(): Config
+    {
+        $configuration = $this->getMockAppConfigurationArray();
+        unset($configuration['queries']['get_group_display_name']);
+
+        $nextcloudConfigStub = $this->getMockBuilder(IConfig::class)->getMock();
+        $nextcloudConfigStub->method('getSystemValue')->willReturn($configuration);
         return new Config($this->getLogStub(), $nextcloudConfigStub);
     }
 

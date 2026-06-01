@@ -21,26 +21,31 @@
 
 namespace OCA\UserBackendSqlRaw;
 
+use OC\User\LazyUser;
 use OCP\Group\Backend\ABackend;
 use OCP\Group\Backend\IAddToGroupBackend;
 use OCP\Group\Backend\ICountUsersBackend;
-use OCP\Group\Backend\ICreateGroupBackend;
+use OCP\Group\Backend\ICreateNamedGroupBackend;
 use OCP\Group\Backend\IDeleteGroupBackend;
 use OCP\Group\Backend\IGetDisplayNameBackend;
 use OCP\Group\Backend\INamedBackend;
 use OCP\Group\Backend\IRemoveFromGroupBackend;
+use OCP\Group\Backend\ISearchableGroupBackend;
 use OCP\Group\Backend\ISetDisplayNameBackend;
 use OCP\GroupInterface;
+use OCP\IUserManager;
+use OCP\Server;
 use Psr\Log\LoggerInterface;
 
 class GroupBackend extends ABackend implements
     INamedBackend,
     IAddToGroupBackend,
     IRemoveFromGroupBackend,
-    ICreateGroupBackend,
+    ICreateNamedGroupBackend,
     IDeleteGroupBackend,
     ICountUsersBackend,
     IGetDisplayNameBackend,
+    ISearchableGroupBackend,
     ISetDisplayNameBackend {
 
     /** @var LoggerInterface */
@@ -132,6 +137,11 @@ class GroupBackend extends ABackend implements
 
     public function usersInGroup($gid, $search = '', $limit = -1, $offset = 0): array
     {
+        return array_keys($this->searchInGroup($gid, $search, $limit, $offset));
+    }
+
+    public function searchInGroup(string $gid, string $search = '', int $limit = -1, int $offset = 0): array
+    {
         if (empty($this->config->getQueryGetGroupUsers())) {
             return [];
         }
@@ -154,7 +164,12 @@ class GroupBackend extends ABackend implements
         $statement->execute();
 
         $users = $statement->fetchAll(\PDO::FETCH_COLUMN, 0);
-        return array_map('strval', $users ?: []);
+        $userManager = Server::get(IUserManager::class);
+        $matchedUsers = [];
+        foreach (array_map('strval', $users ?: []) as $uid) {
+            $matchedUsers[$uid] = new LazyUser($uid, $userManager);
+        }
+        return $matchedUsers;
     }
 
     public function addToGroup(string $uid, string $gid): bool
@@ -183,17 +198,20 @@ class GroupBackend extends ABackend implements
         ]);
     }
 
-    public function createGroup(string $gid): bool
+    public function createGroup(string $name): ?string
     {
         if (empty($this->config->getQueryCreateGroup())) {
-            return false;
+            return null;
         }
 
         $statement = $this->db->getDbHandle()->prepare($this->config->getQueryCreateGroup());
-        return (bool)$this->executeOrCatchExceptionAndReturnFalse($statement, [
-            ':group_id' => $gid,
-            ':display_name' => $gid,
+        $groupId = $name;
+        $created = (bool)$this->executeOrCatchExceptionAndReturnFalse($statement, [
+            ':group_id' => $groupId,
+            ':display_name' => $name,
         ]);
+
+        return $created ? $groupId : null;
     }
 
     public function deleteGroup(string $gid): bool
@@ -234,6 +252,20 @@ class GroupBackend extends ABackend implements
         $statement->execute(['group_id' => $gid]);
         $displayName = $statement->fetchColumn();
         return ($displayName === false || is_null($displayName)) ? '' : (string)$displayName;
+    }
+
+    public function getGroupDetails(string $gid): array
+    {
+        if (empty($this->config->getQueryGetGroupDisplayName())) {
+            return [];
+        }
+
+        $displayName = $this->getDisplayName($gid);
+        if ($displayName !== '') {
+            return ['displayName' => $displayName];
+        }
+
+        return $this->groupExists($gid) ? ['displayName' => $gid] : [];
     }
 
     public function setDisplayName(string $gid, string $displayName): bool
