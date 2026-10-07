@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        nextcloud: [stable31, stable32, stable33]
+        nextcloud: [stable31, stable32, stable33, stable34, stable35]
         php: ['8.3']
     steps:
       - name: Install system package dependencies

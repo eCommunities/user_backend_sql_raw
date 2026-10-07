@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-10-07
+
+### Added
+
+* Compatibility with Nextcloud 34 and 35, with CI coverage for both stable branches.
+* Integration coverage for registering both SQL backends through application bootstrap.
+
 ## [3.3.0] - 2026-06-01
 
 ### Added

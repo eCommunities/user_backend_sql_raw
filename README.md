@@ -42,8 +42,20 @@ Original project author attribution is retained in this fork.
 
 Current target compatibility:
 
-* Nextcloud 31 - 33
+* Nextcloud 31 - 35
 * PHP 8.1 - 8.5
+
+Compatibility validation on 2026-10-07 used isolated Nextcloud installations,
+PHP 8.3.30 and SQLite fixtures:
+
+| Nextcloud | PHPUnit result | Normal `occ app:enable` |
+| --- | --- | --- |
+| 34.0.4 | 57 tests, 152 assertions passed | Passed without `--force` |
+| 35.0.1 | 57 tests, 152 assertions passed | Passed without `--force` |
+
+The suite covers application bootstrap, user authentication and password formats,
+user lifecycle, and SQL-backed group operations. This does not replace validation
+of a deployment's own SQL queries or its MySQL/PostgreSQL connection settings.
 
 ## Installation
 
